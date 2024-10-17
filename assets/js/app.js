@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const products = [
-        { "image": "./assets/img/image-waffle-desktop.jpg", "name": "Cristiano Ronaldo", "category": "Match Attack", "price": 6.50 },
-        { "image": "./assets/img/image-creme-brulee-desktop.jpg", "name": "Vanilla Bean Crème Brûlée", "category": "Crème Brûlée", "price": 7.00 },
-        { "image": "./assets/img/image-macaron-desktop.jpg", "name": "Macaron Mix of Five", "category": "Macaron", "price": 8.00 },
-        { "image": "./assets/img/image-tiramisu-desktop.jpg", "name": "Classic Tiramisu", "category": "Tiramisu", "price": 5.50 },
-        { "image": "./assets/img/image-baklava-desktop.jpg", "name": "Pistachio Baklava", "category": "Baklava", "price": 4.00 },
-        { "image": "./assets/img/image-meringue-desktop.jpg", "name": "Lemon Meringue Pie", "category": "Pie", "price": 5.00 },
-        { "image": "./assets/img/image-cake-desktop.jpg", "name": "Red Velvet Cake", "category": "Cake", "price": 4.50 },
-        { "image": "./assets/img/image-brownie-desktop.jpg", "name": "Salted Caramel Brownie", "category": "Brownie", "price": 4.50 },
-        { "image": "./assets/img/image-panna-cotta-desktop.jpg", "name": "Vanilla Panna Cotta", "category": "Panna Cotta", "price": 6.50 }
+        { "image": "./assets/img/ac-ezio.jpeg", "name": "Assassins Creed: The Ezio Collection", "category": "PS4", "price": 16.50 },
+        { "image": "./assets/img/ac-unity.jpeg", "name": "Assassins Creed: Unity", "category": "PS4", "price": 6.50 },
+        { "image": "./assets/img/euro08.jpeg", "name": "EURO: 2008", "category": "PS2", "price": 2.50 },
+        { "image": "./assets/img/fifa05.jpeg", "name": "FIFA: 2005", "category": "PS2", "price": 2.50 },
+        { "image": "./assets/img/fifa09.jpeg", "name": "FIFA: 09", "category": "PS2", "price": 2.50 },
+        { "image": "./assets/img/hp.jpeg", "name": "Harry Potter: 5", "category": "Wii", "price": 7.50 },
+        { "image": "./assets/img/pes09.jpeg", "name": "PES: 09", "category": "PS2", "price": 2.50 },
+        { "image": "./assets/img/pes11.jpeg", "name": "PES: 2011", "category": "PS2", "price": 2.50 },
     ];
 
     const productList = document.getElementById('product-list');
@@ -29,17 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="product-info">
                     <p>${product.category}</p>
                     <h3>${product.name}</h3>
-                    <p>$${product.price.toFixed(2)}</p>
+                    <p>DKK ${product.price.toFixed(2)}</p>
                 </div>
                 <button class="add-to-cart-btn" onclick="addToCart(${index})">
-                    Add to Cart
-                </button>
-                <div class="quantity-selector" id="quantity-selector-${index}">
-                    <button class="quantity-btn" onclick="decreaseQuantity(${index})">-</button>
-                    <span class="quantity-display" id="quantity-${index}">1</span>
-                    <button class="quantity-btn" onclick="increaseQuantity(${index})">+</button>
-                </div>
-            `;
+                    Tilføj til kurv
+                </button>`;
             productList.appendChild(productDiv);
         });
     }
@@ -50,29 +43,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cart.length === 0) {
             cartItems.innerHTML = `
                 <div class="empty-cart">
-                    <img src="./assets/img/illustration-empty-cart.svg" alt="Empty Cart">
-                    <p>Your added items will appear here</p>
-                </div>
-            `;
+                    <img src="./assets/img/cart-shopping-solid.svg" alt="svg af en vogn">
+                    <p>Dine tilføjet varer bliver vist her</p>
+                </div>`;
         } else {
             cart.forEach((item, index) => {
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item';
                 cartItem.innerHTML = `
                     <p>${item.name} x ${item.quantity}</p>
-                    <p>$${(item.price * item.quantity).toFixed(2)}</p>
-                    <button class="removeButton" onclick="removeFromCart(${index})">x</button>
-                `;
+                    <p>DKK ${(item.price * item.quantity).toFixed(2)}</p>
+                    <button class="removeButton" onclick="removeFromCart(${index})">x</button>`;
                 cartItems.appendChild(cartItem);
                 total += item.price * item.quantity;
             });
         }
-        cartCount.textContent = cart.length;
-        orderTotal.textContent = total.toFixed(2);
-
-        // Display total in a formatted style
-        const totalSection = document.querySelector('.cart-total');
-        totalSection.innerHTML = `Order Total: <strong>$${total.toFixed(2)}</strong>`;
+        orderTotal.innerHTML = `Beløb i alt: <strong>DKK ${total.toFixed(2)}</strong>`;
     }
 
     window.addToCart = function(index) {
@@ -82,33 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
             existingItem.quantity++;
         } else {
             cart.push({ ...product, quantity: 1 });
-        }
-        renderCart();
-        showQuantitySelector(index);
-    };
-
-    function showQuantitySelector(index) {
-        const quantitySelector = document.getElementById(`quantity-selector-${index}`);
-        quantitySelector.style.display = 'flex';
-    }
-
-    window.increaseQuantity = function(index) {
-        const existingItem = cart.find(item => item.name === products[index].name);
-        if (existingItem) {
-            existingItem.quantity++;
-            document.getElementById(`quantity-${index}`).textContent = existingItem.quantity;
-        }
-        renderCart();
-    };
-
-    window.decreaseQuantity = function(index) {
-        const existingItem = cart.find(item => item.name === products[index].name);
-        if (existingItem && existingItem.quantity > 1) {
-            existingItem.quantity--;
-            document.getElementById(`quantity-${index}`).textContent = existingItem.quantity;
-        } else if (existingItem && existingItem.quantity === 1) {
-            cart = cart.filter(item => item.name !== products[index].name);
-            document.getElementById(`quantity-selector-${index}`).style.display = 'none';
         }
         renderCart();
     };
@@ -122,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cart.length > 0) {
             alert('Order confirmed! Thank you for your purchase.');
         } else {
-            alert('Your cart is empty. Add some items first!');
+            alert('Din kurv er tom. Tilføj nogle spil først!');
         }
     });
 
