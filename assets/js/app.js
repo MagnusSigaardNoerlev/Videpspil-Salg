@@ -21,11 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmOrder = document.getElementById('confirm-order');
     const newOrder = document.getElementById('new-order');
 
-    // Opretter en tom array til kurven, som skal holde de produkter, brugeren tilføjer.
+    // Opretter et tom array til kurven, som skal holde de produkter, brugeren tilføjer.
     let cart = [];
 
     // Funktion til at vise produkterne på siden. Den sletter først indholdet i 'productList', 
-    // og dernæst tilføjes hvert produkt i DOM'en med en 'Tilføj til kurv'-knap.
+    // og dernæst tilføjes hvert produkt i DOM'en med en 'Tilføj til kurv' knap.
     function renderProducts() {
         productList.innerHTML = ''; // Tømmer produktlisten.
         products.forEach((product, index) => {
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event handler for 'Bekræft bestilling'-knappen. Viser en besked, hvis kurven ikke er tom.
     confirmOrder.addEventListener('click', () => {
         if (cart.length > 0) {
-            alert('Order confirmed! Thank you for your purchase.');
+            alert('Bestilling bekræftet! Tak for dit køb.');
         } else {
             alert('Din kurv er tom. Tilføj nogle spil først!');
         }
